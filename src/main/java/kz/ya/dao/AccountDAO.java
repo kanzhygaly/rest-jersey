@@ -11,9 +11,11 @@ import kz.ya.exception.CommonException;
  */
 public interface AccountDAO {
     
-    Account getAccountById(long accountId) throws CommonException;
+    Account getAccountById(long accountId);
     
     Account createAccount(String accountNo) throws CommonException;
+    
+    void deleteAccount(long accountId) throws CommonException;
     
     void updateAccountBalance(long accountId, BigDecimal deltaAmount) throws CommonException;
     

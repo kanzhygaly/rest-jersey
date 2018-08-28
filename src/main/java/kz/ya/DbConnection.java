@@ -14,7 +14,7 @@ public class DbConnection {
     private static final ThreadLocal<EntityManager> THREAD_LOCAL;
 
     static {
-        EMF = Persistence.createEntityManagerFactory("bank_pu");
+        EMF = Persistence.createEntityManagerFactory("h2_pu");
         THREAD_LOCAL = new ThreadLocal<>();
     }
 

@@ -32,8 +32,7 @@ public class TransferService {
         try {
             accountDAO.transferAccountBalance(bean);
         } catch (CommonException ex) {
-            // transaction failed
-            throw new WebApplicationException("Transaction failed", Response.Status.BAD_REQUEST);
+            throw new WebApplicationException("Transaction failed: " + ex.getMessage(), Response.Status.BAD_REQUEST);
         }
         return Response.status(Response.Status.OK).build();
     }

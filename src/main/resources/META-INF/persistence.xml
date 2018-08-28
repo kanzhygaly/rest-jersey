@@ -6,15 +6,16 @@
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
                       http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
     
-    <persistence-unit name="bank_pu">
+    <persistence-unit name="h2_pu" transaction-type="RESOURCE_LOCAL">
         <class>kz.ya.domain.Account</class>
         
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
             <property name="hibernate.connection.driver_class" value="org.h2.Driver" />
             <property name="hibernate.connection.username" value="" />
             <property name="hibernate.connection.password" value="" />
-            <property name="hibernate.connection.url" value="jdbc:h2:${project.basedir}" />
+            <property name="hibernate.connection.url" value="jdbc:h2:./h2_db" />
             <property name="hibernate.max_fetch_depth" value="3" />
         </properties>
     </persistence-unit>

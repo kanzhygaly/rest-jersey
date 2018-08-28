@@ -27,7 +27,7 @@ public class AccountService {
 
     private final AccountDAO accountDAO = new AccountDAOImpl();
     private static final Logger LOG = Logger.getLogger(AccountService.class);
-    
+
     /**
      * Find account by id.
      *
@@ -55,6 +55,24 @@ public class AccountService {
     }
 
     /**
+     * Delete amount by account Id
+     *
+     * @param accountId
+     * @return
+     */
+    @DELETE
+    @Path("/{accountId}")
+    public Response deleteAccount(@PathParam("accountId") long accountId) {
+        try {
+            accountDAO.deleteAccount(accountId);
+
+            return Response.status(Response.Status.OK).build();
+        } catch (CommonException ex) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+    /**
      * Deposit amount by account Id.
      *
      * @param accountId
@@ -72,7 +90,7 @@ public class AccountService {
         }
 
         accountDAO.updateAccountBalance(accountId, amount);
-        
+
         return accountDAO.getAccountById(accountId);
     }
 
@@ -92,14 +110,14 @@ public class AccountService {
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new WebApplicationException("Not valid amount", Response.Status.BAD_REQUEST);
         }
-        
+
         BigDecimal delta = amount.negate();
         if (LOG.isDebugEnabled()) {
             LOG.debug("Withdraw service: delta change to account  " + delta + " Account ID = " + accountId);
         }
-        
+
         accountDAO.updateAccountBalance(accountId, delta);
-        
+
         return accountDAO.getAccountById(accountId);
     }
 
@@ -125,19 +143,6 @@ public class AccountService {
     @GET
     @Path("/{accountId}/balance")
     public BigDecimal getBalance(@PathParam("accountId") long accountId) throws CommonException {
-        throw new WebApplicationException("Not supported yet.", Response.Status.NOT_IMPLEMENTED);
-    }
-
-    /**
-     * Delete amount by account Id
-     *
-     * @param accountId
-     * @return
-     * @throws CommonException
-     */
-    @DELETE
-    @Path("/{accountId}")
-    public Response deleteAccount(@PathParam("accountId") long accountId) throws CommonException {
         throw new WebApplicationException("Not supported yet.", Response.Status.NOT_IMPLEMENTED);
     }
 }

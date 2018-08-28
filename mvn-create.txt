@@ -1,2 +1,0 @@
-﻿mvn archetype:generate -DarchetypeArtifactId=jersey-quickstart-grizzly2 -DarchetypeGroupId=org.glassfish.jersey.archetypes -DinteractiveMode=false -DgroupId=kz.ya -DartifactId=rest-jersey -Dpackage=kz.ya -DarchetypeVersion=2.27
-https://github.com/parths049/money-transfer

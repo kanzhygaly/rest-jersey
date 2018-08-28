@@ -6,6 +6,8 @@ import kz.ya.DbConnection;
 import kz.ya.domain.Account;
 import kz.ya.dto.UserTransfer;
 import kz.ya.exception.CommonException;
+import kz.ya.service.TransferService;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -13,16 +15,24 @@ import kz.ya.exception.CommonException;
  */
 public class AccountDAOImpl implements AccountDAO {
     
+    private final static Logger LOG = Logger.getLogger(TransferService.class);
+    
+    /**
+     * Get account by id.
+     * 
+     * @param accountId
+     * @return existing Account if found, else NULL
+     */
     @Override
-    public Account getAccountById(long accountId) throws CommonException {
+    public Account getAccountById(long accountId) {
         return DbConnection.getEntityManager().find(Account.class, accountId);
     }
 
     /**
-     * Create account.
+     * Create new account.
      *
      * @param accountNo
-     * @return accountId
+     * @return new Account
      * @throws CommonException
      */
     @Override
@@ -38,11 +48,39 @@ public class AccountDAOImpl implements AccountDAO {
             if (DbConnection.getEntityManager() != null && DbConnection.getEntityManager().isOpen()) {
                 DbConnection.rollback();
             }
+            LOG.error(e);
             throw new CommonException(e);
         } finally {
             DbConnection.closeEntityManager();
         }
         return account;
+    }
+    
+    /**
+     * Delete account by id.
+     * 
+     * @param accountId
+     * @throws CommonException 
+     */
+    @Override
+    public void deleteAccount(long accountId) throws CommonException {
+        try {
+            DbConnection.beginTransaction();
+            
+            Account targetAccount = getAccountById(accountId);
+
+            DbConnection.getEntityManager().remove(targetAccount);
+
+            DbConnection.commit();
+        } catch (RuntimeException e) {
+            if (DbConnection.getEntityManager() != null && DbConnection.getEntityManager().isOpen()) {
+                DbConnection.rollback();
+            }
+            LOG.error(e);
+            throw new CommonException(e);
+        } finally {
+            DbConnection.closeEntityManager();
+        }
     }
 
     /**
@@ -58,7 +96,7 @@ public class AccountDAOImpl implements AccountDAO {
             DbConnection.beginTransaction();
 
             Account targetAccount = DbConnection.getEntityManager().find(
-                    Account.class, accountId, LockModeType.PESSIMISTIC_READ);
+                    Account.class, accountId, LockModeType.READ);
 
             if (targetAccount == null) {
                 throw new CommonException("updateAccountBalance(): failed to lock account : " + accountId);
@@ -81,6 +119,7 @@ public class AccountDAOImpl implements AccountDAO {
             if (DbConnection.getEntityManager() != null && DbConnection.getEntityManager().isOpen()) {
                 DbConnection.rollback();
             }
+            LOG.error(e);
             throw new CommonException(e);
         } finally {
             DbConnection.closeEntityManager();
@@ -99,10 +138,10 @@ public class AccountDAOImpl implements AccountDAO {
             DbConnection.beginTransaction();
 
             Account fromAccount = DbConnection.getEntityManager().find(
-                    Account.class, dto.getFromAccountId(), LockModeType.PESSIMISTIC_READ);
+                    Account.class, dto.getFromAccountId(), LockModeType.READ);
 
             Account toAccount = DbConnection.getEntityManager().find(
-                    Account.class, dto.getToAccountId(), LockModeType.PESSIMISTIC_READ);
+                    Account.class, dto.getToAccountId(), LockModeType.READ);
 
             // check locking status
             if (fromAccount == null) {
@@ -133,6 +172,7 @@ public class AccountDAOImpl implements AccountDAO {
             if (DbConnection.getEntityManager() != null && DbConnection.getEntityManager().isOpen()) {
                 DbConnection.rollback();
             }
+            LOG.error(e);
             throw new CommonException(e);
         } finally {
             DbConnection.closeEntityManager();

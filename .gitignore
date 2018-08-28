@@ -25,3 +25,4 @@ nb-configuration.xml
 /dist/
 /nbdist/
 /.nb-gradle/
+/nbproject/

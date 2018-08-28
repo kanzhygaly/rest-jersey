@@ -13,6 +13,15 @@ public class UserTransfer {
     private Long toAccountId;
     private BigDecimal amount;
 
+    public UserTransfer() {
+    }
+
+    public UserTransfer(Long fromAccountId, Long toAccountId, BigDecimal amount) {
+        this.fromAccountId = fromAccountId;
+        this.toAccountId = toAccountId;
+        this.amount = amount;
+    }
+
     public Long getFromAccountId() {
         return fromAccountId;
     }
