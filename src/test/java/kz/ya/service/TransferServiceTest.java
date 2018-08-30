@@ -62,7 +62,6 @@ public class TransferServiceTest extends CommonServiceTest {
                 .accept(MediaType.APPLICATION_JSON_TYPE)
                 .post(Entity.entity(dto, MediaType.APPLICATION_JSON_TYPE));
         
-        System.out.println(response);
         assertEquals(response.getStatusInfo().getStatusCode(), Response.Status.BAD_REQUEST.getStatusCode());
     }
 }

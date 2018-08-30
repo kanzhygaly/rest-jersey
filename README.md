@@ -1,21 +1,43 @@
-# neotech-task
-Console application written on Java that uses java.util.concurrent to effectively write the data to Mongo DB.
-
-## Supported functionality:
- - Write current date to DB every second
- > java -jar target/neotech-1.0.jar
- - Print all data from DB:
- > java -jar target/neotech-1.0.jar -p
- - Reset DB data:
- > java -jar target/neotech-1.0.jar -c
+# Money Transfer RESTful API
+Simple standalone application for money transfers between accounts.
 
 ## Technology stack:
+ - JAX-RS 2.1 / Jersey [2.27](https://jersey.github.io/)
+ - Grizzly HTTP server
  - Maven [3+](https://maven.apache.org/)
  - Java [1.8+](http://www.oracle.com/technetwork/java/javase/overview/index.html)
- - MongoDB [latest](https://www.mongodb.com)
+ - JPA / Hibernate
+ - JTA for transaction management
+ - c3p0 connection pool
+ - Log4J for logging
+ - H2 in-memory Database [latest](http://www.h2database.com)
  
-## Build the JAR file
- > mvn clean install
+## Build and Run
+```sh 
+mvn exec:java
+```
 
-## MongoDB
-mongodb://localhost:27017
+Application starts on 
+```sh 
+http://localhost:8080/rest-jersey/
+```
+
+## Available Services
+| HTTP METHOD | PATH | USAGE | TESTS |
+| ----------- | ------ | ------ | ------ |
+| GET | /account/{accountId} | get account by accountId | - |
+| PUT | /account/create | create a new account | - |
+| DELETE | /account/{accountId} | remove account by accountId | - |
+| PUT | /account/{accountId}/withdraw/{amount} | withdraw money from account | - |
+| PUT | /account/{accountId}/deposit/{amount} | deposit money to account | - |
+| POST | /transfer | perform transfer from one account to another | + |
+
+### Not Implemented
+| HTTP METHOD | PATH | USAGE |
+| -----------| ------ | ------ |
+| GET | /account/all | get all accounts | 
+| GET | /account/{accountId}/balance | get account balance by accountId | 
+
+## TODO
+- Implement left services
+- Cover all tests
